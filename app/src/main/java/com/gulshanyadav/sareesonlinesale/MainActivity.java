@@ -2,10 +2,14 @@ package com.gulshanyadav.sareesonlinesale;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         superWebView.loadUrl("http://newexchangeoffer.com/search.php?query=sarees");
         superWebView.getSettings().setJavaScriptEnabled(true);
+        superWebView.getSettings().setSupportZoom(true);
+
         superWebView.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -90,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        if(!isNetworkAvailable()){
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection!", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+
+
     }
 
     @Override
@@ -113,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.myMenuThree:
                 superWebView.reload();
+                break;
+
+            case R.id.myMenuFour:
+                shareApp();
                 break;
 
         }
@@ -151,4 +168,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void shareApp(){
+        final String appPackageName = getPackageName();
+        Intent sharingintent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingintent.setType("text/plain");
+        String shareBody = "Install Saree Online Sale "+"https://play.google.com/store/apps/details?id=" + appPackageName;
+        sharingintent.putExtra(Intent.EXTRA_SUBJECT,"Saree Online Sale");
+        sharingintent.putExtra(Intent.EXTRA_TEXT,shareBody);
+        startActivity(Intent.createChooser(sharingintent,"Share via"));
+    }
+
 }
