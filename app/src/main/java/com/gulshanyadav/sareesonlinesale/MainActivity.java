@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +25,21 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageView superImageView;
     ProgressBar superProgressBar;
+    DatabaseReference UsersRef;
     WebView superWebView;
 
     private ProgressDialog loadingBar;
@@ -46,10 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         superProgressBar.setMax(100);
 
-        superWebView.loadUrl("http://newexchangeoffer.com/search.php?query=sarees");
-        superWebView.getSettings().setJavaScriptEnabled(true);
-        superWebView.getSettings().setSupportZoom(true);
-
         superWebView.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -65,6 +73,14 @@ public class MainActivity extends AppCompatActivity {
                 loadingBar.dismiss();
             }
         });
+
+        superWebView.getSettings().setSupportZoom(true);
+        superWebView.getSettings().setBuiltInZoomControls(true);
+        superWebView.getSettings().setDisplayZoomControls(true);
+        superWebView.getSettings().setJavaScriptEnabled(true);
+        superWebView.loadUrl("http://newexchangeoffer.com/search.php?query=sarees");
+//        superWebView.loadUrl("https://google.com");
+
         superWebView.setWebChromeClient(new WebChromeClient() {
 
             @Override
@@ -102,6 +118,47 @@ public class MainActivity extends AppCompatActivity {
             snackbar.show();
         }
 
+        try {
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setApplicationId(getResources().getString(R.string.firebase_app_id)) // Required for Analytics.
+                    .setApiKey(getResources().getString(R.string.firebase_api_key)) // Required for Auth.
+                    .setDatabaseUrl("https://sareesonlinesale-5e81e.firebaseio.com/") // Required for RTDB.
+                    .build();
+
+            FirebaseApp myapp = null;
+            boolean hasBeenInitialized=false;
+            List<FirebaseApp> firebaseApps = FirebaseApp.getApps(getApplicationContext());
+            for(FirebaseApp app : firebaseApps){
+                if(app.getName().equals("sec")){
+                    hasBeenInitialized=true;
+                    myapp = app;
+                }
+            }
+
+            if(!hasBeenInitialized) {
+                myapp = FirebaseApp.initializeApp(getApplicationContext(), options,"sec");
+            }
+
+            FirebaseDatabase secondaryDatabase = FirebaseDatabase.getInstance(myapp);
+            UsersRef = secondaryDatabase.getReference().child("Allow");
+            UsersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (!dataSnapshot.child("access").getValue().toString().equalsIgnoreCase("yes")) {
+                            Toast.makeText(MainActivity.this, dataSnapshot.child("access").getValue().toString(), Toast.LENGTH_SHORT).show();
+                            finish();
+                            finishAffinity();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }catch (Exception e){  }
 
     }
 
