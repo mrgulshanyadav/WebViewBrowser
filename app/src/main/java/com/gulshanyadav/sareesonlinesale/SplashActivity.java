@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private int i = 0;
-    private GifImageView gifImageView;
+    private ImageView gifImageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        gifImageView = (GifImageView)findViewById(R.id.loader);
+        gifImageView = (ImageView)findViewById(R.id.loader);
         progressBar = (ProgressBar)findViewById(R.id.splash_progress_bar);
 
         progressBar.setProgress(0);
@@ -41,9 +42,9 @@ public class SplashActivity extends AppCompatActivity {
         if(!isNetworkAvailable()){
 //            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection!", Snackbar.LENGTH_LONG);
 //            snackbar.show();
-            gifImageView.setImageResource(R.drawable.sareesimg);
+            gifImageView.setImageResource(R.drawable.splash);
         }else{
-            Glide.with(this).asGif().load("http://9999071999.com/education/images/loop1.gif").into(gifImageView);
+            Glide.with(this).load("http://9999071999.com/education/images/loop1.gif").into(gifImageView);
         }
 
         new Handler().postDelayed(new Runnable() {

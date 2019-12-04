@@ -25,8 +25,10 @@ import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar superProgressBar;
     DatabaseReference UsersRef;
     WebView superWebView;
+    RelativeLayout noConnectionLayout;
+    TextView messageTextView;
+    Button retryButton;
 
     private ProgressDialog loadingBar;
     TextView actionbartitle;
@@ -69,25 +76,56 @@ public class MainActivity extends AppCompatActivity {
         superImageView = findViewById(R.id.myImageView);
         superProgressBar = findViewById(R.id.myProgressBar);
         superWebView = findViewById(R.id.myWebView);
+        noConnectionLayout = (RelativeLayout)findViewById(R.id.noconnection_relativeLayout);
+        messageTextView = (TextView)findViewById(R.id.message);
+        retryButton = (Button)findViewById(R.id.retry_button);
 
         loadingBar = new ProgressDialog(this);
 
         superProgressBar.setMax(100);
+
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                superWebView.reload();
+            }
+        });
+
+
+        initButtons();
 
         superWebView.setWebViewClient(new WebViewClient() {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                loadingBar.setTitle("Loading");
-                loadingBar.show();
+                initButtons();
+                if(!isNetworkAvailable()){
+                    superWebView.setVisibility(View.GONE);
+                    noConnectionLayout.setVisibility(View.VISIBLE);
+                }else {
+                    loadingBar.setTitle("Loading");
+                    loadingBar.show();
+                    superWebView.setVisibility(View.VISIBLE);
+                    noConnectionLayout.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                loadingBar.dismiss();
+                initButtons();
+                if(!isNetworkAvailable()){
+                    superWebView.setVisibility(View.GONE);
+                    noConnectionLayout.setVisibility(View.VISIBLE);
+                }else {
+                    loadingBar.dismiss();
+                    superWebView.setVisibility(View.VISIBLE);
+                    noConnectionLayout.setVisibility(View.GONE);
+                }
             }
+
+
         });
 
         superWebView.getSettings().setSupportZoom(true);
@@ -103,13 +141,19 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 superProgressBar.setProgress(newProgress);
+                initButtons();
             }
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
 //                getActionBar().setTitle(title);
-                actionbartitle.setText(title);
+                initButtons();
+                if(!isNetworkAvailable()){
+                    actionbartitle.setText("No Internet Connection!");
+                }else {
+                    actionbartitle.setText(title);
+                }
             }
 
             @Override
@@ -117,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
                 super.onReceivedIcon(view, icon);
                 superImageView.setImageBitmap(icon);
             }
+
+
         });
 
         superWebView.setDownloadListener(new DownloadListener() {
@@ -129,11 +175,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        if(!isNetworkAvailable()){
-            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection!", Snackbar.LENGTH_LONG);
-            snackbar.show();
-        }
+        checkInternetConnection();
 
         try {
             FirebaseOptions options = new FirebaseOptions.Builder()
@@ -207,6 +249,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void initButtons() {
+        if (superWebView.canGoForward()) {
+            forward.setEnabled(true);
+            forward.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_forward_black_24dp));
+        }else {
+            forward.setEnabled(false);
+            forward.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_forward_grey_24dp));
+        }
+        if(superWebView.canGoBack()){
+            back.setEnabled(true);
+            back.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
+        }else{
+            back.setEnabled(false);
+            back.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back_grey_24dp));
+        }
+    }
+
+
+    private void checkInternetConnection() {
+        if(!isNetworkAvailable()){
+            superWebView.setVisibility(View.GONE);
+            noConnectionLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater myMenuInflater = getMenuInflater();
@@ -216,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        back.setEnabled(true);
         switch (item.getItemId()) {
 
             case R.id.myMenuFive:
