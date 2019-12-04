@@ -1,5 +1,7 @@
 package com.gulshanyadav.sareesonlinesale;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,12 +19,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
@@ -43,12 +48,23 @@ public class MainActivity extends AppCompatActivity {
     WebView superWebView;
 
     private ProgressDialog loadingBar;
-
+    TextView actionbartitle;
+    ImageView back,forward,refresh,share;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        //getSupportActionBar().setElevation(0);
+        View view = getSupportActionBar().getCustomView();
+        actionbartitle = view.findViewById(R.id.title);
+        back = view.findViewById(R.id.back_button);
+        forward = view.findViewById(R.id.forward_button);
+        refresh = view.findViewById(R.id.refresh_button);
+        share = view.findViewById(R.id.share_button);
 
         superImageView = findViewById(R.id.myImageView);
         superProgressBar = findViewById(R.id.myProgressBar);
@@ -92,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                getSupportActionBar().setTitle(title);
+//                getActionBar().setTitle(title);
+                actionbartitle.setText(title);
             }
 
             @Override
@@ -160,6 +177,34 @@ public class MainActivity extends AppCompatActivity {
             });
         }catch (Exception e){  }
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoForward();
+            }
+        });
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                superWebView.reload();
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareApp();
+            }
+        });
+
     }
 
     @Override
@@ -173,20 +218,40 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.myMenuOne:
-                onBackPressed();
+            case R.id.myMenuFive:
+                superWebView.loadUrl("http://9999071999.com/education/Weather.php");
                 break;
 
-            case R.id.myMenuTwo:
-                GoForward();
+            case R.id.myMenuSix:
+                superWebView.loadUrl("http://9999071999.com/education/Timepass.php");
                 break;
 
-            case R.id.myMenuThree:
-                superWebView.reload();
+            case R.id.myMenuSeven:
+                superWebView.loadUrl("http://9999071999.com/education/Greetings.php");
                 break;
 
-            case R.id.myMenuFour:
-                shareApp();
+            case R.id.myMenuEight:
+                superWebView.loadUrl("http://9999071999.com/education/Status.php");
+                break;
+
+            case R.id.myMenuNine:
+                superWebView.loadUrl("http://9999071999.com/education/Status.php");
+                break;
+
+            case R.id.myMenuTen:
+                superWebView.loadUrl("http://9999071999.com/education/Viralvideos.php");
+                break;
+
+            case R.id.myMenuEleven:
+                superWebView.loadUrl("http://9999071999.com/education/Join.php");
+                break;
+
+            case R.id.myMenuTwelve:
+                superWebView.loadUrl("http://9999071999.com/education/Discount.php");
+                break;
+
+            case R.id.myMenuThirteen:
+                superWebView.loadUrl("http://9999071999.com/education/quiz.php");
                 break;
 
         }
@@ -242,5 +307,7 @@ public class MainActivity extends AppCompatActivity {
         sharingintent.putExtra(Intent.EXTRA_TEXT,shareBody);
         startActivity(Intent.createChooser(sharingintent,"Share via"));
     }
+
+
 
 }
