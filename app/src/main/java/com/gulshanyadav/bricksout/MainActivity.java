@@ -95,12 +95,13 @@ public class MainActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                superWebView.loadUrl("https://bricksout.com");
+                superWebView.loadUrl(getResources().getString(R.string.base_url));
             }
         });
 
 
         initButtons();
+        initHome(getResources().getString(R.string.base_url));
 
         superWebView.setWebViewClient(new WebViewClient() {
 
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 initButtons();
+                initHome(url);
+//                Toast.makeText(MainActivity.this,url,Toast.LENGTH_LONG).show();
                 if(!isNetworkAvailable()){
                     superWebView.setVisibility(View.GONE);
                     noConnectionLayout.setVisibility(View.VISIBLE);
@@ -123,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 initButtons();
+                initHome(url);
                 if(!isNetworkAvailable()){
                     superWebView.setVisibility(View.GONE);
                     noConnectionLayout.setVisibility(View.VISIBLE);
@@ -140,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         superWebView.getSettings().setBuiltInZoomControls(true);
         superWebView.getSettings().setDisplayZoomControls(true);
         superWebView.getSettings().setJavaScriptEnabled(true);
-        superWebView.loadUrl("https://bricksout.com");
+        superWebView.loadUrl(getResources().getString(R.string.base_url));
 //        superWebView.loadUrl("https://google.com");
         superWebView.getSettings().setDomStorageEnabled(true);
         superWebView.getSettings().setAppCacheEnabled(true);
@@ -269,13 +273,27 @@ public class MainActivity extends AppCompatActivity {
         if(superWebView.canGoBack()){
             back.setEnabled(true);
             back.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
-            home.setEnabled(true);
-            home.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_black_24dp));
         }else{
             back.setEnabled(false);
             back.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back_grey_24dp));
+        }
+
+    }
+
+    private void initHome(String url){
+        String base_url = getResources().getString(R.string.base_url);
+        if(url.equals(base_url+"/")
+                ||url.equals(base_url)
+                ||url.equals(base_url.replace("https://","http://www."))
+                ||url.equals(base_url.replace("https://","http://m."))
+                ||url.equals(base_url.replace("https://","http://m."))
+                ||url.equals(base_url.replace("https://","https://m."))
+                ||url.equals(base_url.replace("https://","http://"))){
             home.setEnabled(false);
             home.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_grey_24dp));
+        }else{
+            home.setEnabled(true);
+            home.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_black_24dp));
         }
     }
 
