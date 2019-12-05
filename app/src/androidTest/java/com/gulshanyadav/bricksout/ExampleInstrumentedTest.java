@@ -1,4 +1,4 @@
-package com.gulshanyadav.sareesonlinesale;
+package com.gulshanyadav.bricksout;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

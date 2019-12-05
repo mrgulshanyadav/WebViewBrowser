@@ -1,4 +1,4 @@
-package com.gulshanyadav.sareesonlinesale;
+package com.gulshanyadav.bricksout;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     Button retryButton;
 
     private ProgressDialog loadingBar;
-    TextView actionbartitle;
     ImageView back,forward,refresh,share;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         //getSupportActionBar().setElevation(0);
         View view = getSupportActionBar().getCustomView();
-        actionbartitle = view.findViewById(R.id.title);
         back = view.findViewById(R.id.back_button);
         forward = view.findViewById(R.id.forward_button);
         refresh = view.findViewById(R.id.refresh_button);
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         superWebView.getSettings().setBuiltInZoomControls(true);
         superWebView.getSettings().setDisplayZoomControls(true);
         superWebView.getSettings().setJavaScriptEnabled(true);
-        superWebView.loadUrl("http://newexchangeoffer.com/search.php?query=sarees");
+        superWebView.loadUrl("https://bricksout.com");
 //        superWebView.loadUrl("https://google.com");
 
         superWebView.setWebChromeClient(new WebChromeClient() {
@@ -149,11 +147,6 @@ public class MainActivity extends AppCompatActivity {
                 super.onReceivedTitle(view, title);
 //                getActionBar().setTitle(title);
                 initButtons();
-                if(!isNetworkAvailable()){
-                    actionbartitle.setText("No Internet Connection!");
-                }else {
-                    actionbartitle.setText(title);
-                }
             }
 
             @Override
@@ -288,42 +281,6 @@ public class MainActivity extends AppCompatActivity {
         back.setEnabled(true);
         switch (item.getItemId()) {
 
-            case R.id.myMenuFive:
-                superWebView.loadUrl("http://9999071999.com/education/Weather.php");
-                break;
-
-            case R.id.myMenuSix:
-                superWebView.loadUrl("http://9999071999.com/education/Timepass.php");
-                break;
-
-            case R.id.myMenuSeven:
-                superWebView.loadUrl("http://9999071999.com/education/Greetings.php");
-                break;
-
-            case R.id.myMenuEight:
-                superWebView.loadUrl("http://9999071999.com/education/Status.php");
-                break;
-
-            case R.id.myMenuNine:
-                superWebView.loadUrl("http://9999071999.com/education/Status.php");
-                break;
-
-            case R.id.myMenuTen:
-                superWebView.loadUrl("http://9999071999.com/education/Viralvideos.php");
-                break;
-
-            case R.id.myMenuEleven:
-                superWebView.loadUrl("http://9999071999.com/education/Join.php");
-                break;
-
-            case R.id.myMenuTwelve:
-                superWebView.loadUrl("http://9999071999.com/education/Discount.php");
-                break;
-
-            case R.id.myMenuThirteen:
-                superWebView.loadUrl("http://9999071999.com/education/quiz.php");
-                break;
-
         }
         return true;
     }
@@ -372,12 +329,11 @@ public class MainActivity extends AppCompatActivity {
         final String appPackageName = getPackageName();
         Intent sharingintent = new Intent(android.content.Intent.ACTION_SEND);
         sharingintent.setType("text/plain");
-        String shareBody = "Install Saree Online Sale "+"https://play.google.com/store/apps/details?id=" + appPackageName;
-        sharingintent.putExtra(Intent.EXTRA_SUBJECT,"Saree Online Sale");
+        String shareBody = "Install "+getResources().getString(R.string.app_name)+" https://play.google.com/store/apps/details?id=" + appPackageName;
+        sharingintent.putExtra(Intent.EXTRA_SUBJECT,getResources().getString(R.string.app_name));
         sharingintent.putExtra(Intent.EXTRA_TEXT,shareBody);
         startActivity(Intent.createChooser(sharingintent,"Share via"));
     }
-
 
 
 }

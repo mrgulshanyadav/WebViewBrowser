@@ -1,4 +1,4 @@
-package com.gulshanyadav.sareesonlinesale;
+package com.gulshanyadav.bricksout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,9 +42,9 @@ public class SplashActivity extends AppCompatActivity {
         if(!isNetworkAvailable()){
 //            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection!", Snackbar.LENGTH_LONG);
 //            snackbar.show();
-            gifImageView.setImageResource(R.drawable.splash);
+            gifImageView.setImageResource(R.drawable.logo);
         }else{
-            Glide.with(this).load("http://9999071999.com/education/images/loop1.gif").into(gifImageView);
+            gifImageView.setImageResource(R.drawable.logo);
         }
 
         new Handler().postDelayed(new Runnable() {

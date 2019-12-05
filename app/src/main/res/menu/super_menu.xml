@@ -4,40 +4,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.sabithpkcmnr.webviewmaster.MainActivity">
 
-    <item
-        android:id="@+id/myMenuFive"
-        android:title="Weather Updates"/>
-
-    <item
-        android:id="@+id/myMenuSix"
-        android:title="Time Pass"/>
-
-    <item
-        android:id="@+id/myMenuSeven"
-        android:title="Greetings"/>
-
-    <item
-        android:id="@+id/myMenuEight"
-        android:title="Whatsapp Status"/>
-
-    <item
-        android:id="@+id/myMenuNine"
-        android:title="Earn Money Online"/>
-
-    <item
-        android:id="@+id/myMenuTen"
-        android:title="Viral Videos"/>
-
-    <item
-        android:id="@+id/myMenuEleven"
-        android:title="Join Whatsapp Groups"/>
-
-    <item
-        android:id="@+id/myMenuTwelve"
-        android:title="Discount Coupons"/>
-
-    <item
-        android:id="@+id/myMenuThirteen"
-        android:title="Online Quiz"/>
 
 </menu>

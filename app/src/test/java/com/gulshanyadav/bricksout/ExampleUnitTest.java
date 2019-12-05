@@ -1,4 +1,4 @@
-package com.gulshanyadav.sareesonlinesale;
+package com.gulshanyadav.bricksout;
 
 import org.junit.Test;
 
