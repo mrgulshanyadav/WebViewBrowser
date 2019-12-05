@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     Button retryButton;
 
     private ProgressDialog loadingBar;
-    ImageView back,forward,refresh,share;
+    ImageView back,home,forward,refresh,share;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         //getSupportActionBar().setElevation(0);
         View view = getSupportActionBar().getCustomView();
         back = view.findViewById(R.id.back_button);
+        home = view.findViewById(R.id.home_button);
         forward = view.findViewById(R.id.forward_button);
         refresh = view.findViewById(R.id.refresh_button);
         share = view.findViewById(R.id.share_button);
@@ -88,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 superWebView.reload();
+            }
+        });
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                superWebView.loadUrl("https://bricksout.com");
             }
         });
 
@@ -261,9 +269,13 @@ public class MainActivity extends AppCompatActivity {
         if(superWebView.canGoBack()){
             back.setEnabled(true);
             back.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
+            home.setEnabled(true);
+            home.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_black_24dp));
         }else{
             back.setEnabled(false);
             back.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back_grey_24dp));
+            home.setEnabled(false);
+            home.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_grey_24dp));
         }
     }
 
