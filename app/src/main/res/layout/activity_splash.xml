@@ -9,11 +9,13 @@
 
     <ImageView
         android:id="@+id/loader"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerInside"
+        android:src="@drawable/logo"
+        android:padding="35dp"/>
 
     <ProgressBar
         android:id="@+id/splash_progress_bar"

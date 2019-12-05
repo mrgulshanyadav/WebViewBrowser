@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -132,6 +134,12 @@ public class MainActivity extends AppCompatActivity {
         superWebView.getSettings().setJavaScriptEnabled(true);
         superWebView.loadUrl("https://bricksout.com");
 //        superWebView.loadUrl("https://google.com");
+        superWebView.getSettings().setDomStorageEnabled(true);
+        superWebView.getSettings().setAppCacheEnabled(true);
+        superWebView.getSettings().setLoadsImagesAutomatically(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            superWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
 
         superWebView.setWebChromeClient(new WebChromeClient() {
 
