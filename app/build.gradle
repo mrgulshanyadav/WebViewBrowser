@@ -4,7 +4,7 @@ apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.gulshanyadav.bricksout"
+        applicationId "com.gulshanyadav.divyacarrental"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1

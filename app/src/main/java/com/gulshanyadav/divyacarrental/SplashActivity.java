@@ -1,4 +1,4 @@
-package com.gulshanyadav.bricksout;
+package com.gulshanyadav.divyacarrental;
 
 import android.content.Context;
 import android.content.Intent;

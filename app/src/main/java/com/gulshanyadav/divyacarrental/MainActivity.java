@@ -1,4 +1,4 @@
-package com.gulshanyadav.bricksout;
+package com.gulshanyadav.divyacarrental;
 
 import android.app.ActionBar;
 import android.app.Activity;

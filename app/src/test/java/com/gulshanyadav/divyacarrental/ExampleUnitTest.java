@@ -1,4 +1,4 @@
-package com.gulshanyadav.bricksout;
+package com.gulshanyadav.divyacarrental;
 
 import org.junit.Test;
 
