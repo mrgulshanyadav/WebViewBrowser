@@ -1,4 +1,4 @@
-package com.gulshanyadav.divyacarrental;
+package com.gulshanyadav.twinkletwinkle;
 
 import org.junit.Test;
 

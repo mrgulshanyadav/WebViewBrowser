@@ -1,4 +1,4 @@
-package com.gulshanyadav.divyacarrental;
+package com.gulshanyadav.twinkletwinkle;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

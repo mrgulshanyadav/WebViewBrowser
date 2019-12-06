@@ -1,4 +1,4 @@
-package com.gulshanyadav.divyacarrental;
+package com.gulshanyadav.twinkletwinkle;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,18 +6,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class SplashActivity extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 2500;
